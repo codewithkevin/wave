@@ -9,7 +9,7 @@ const APP_NAME = "Wave";
 const BUNDLE_IDENTIFIER = "com.kevinblack.Wave";
 const PACKAGE_NAME = "com.kevinblack.Wave";
 const ICON = "./assets/images/icon.png";
-const ADAPTIVE_ICON = "./assets/images/adaptive-icon.png";
+const ADAPTIVE_ICON = "./assets/images/icon.png";
 const SCHEME = "Wave";
 
 

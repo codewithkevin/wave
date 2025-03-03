@@ -1,257 +1,350 @@
-import { Link, Stack, router } from "expo-router";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
-  Text,
-  View,
   StyleSheet,
-  SafeAreaView,
-  Pressable,
-  useColorScheme,
+  View,
+  Text,
   Image,
-  ImageSourcePropType,
+  TouchableOpacity,
+  Dimensions,
+  ImageBackground,
+  Animated,
+  PanResponder,
 } from "react-native";
+import { BlurView } from "expo-blur";
 import { StatusBar } from "expo-status-bar";
-import {
-  GestureDetector,
-  Gesture,
-  Directions,
-} from "react-native-gesture-handler";
-import Animated, {
-  FadeIn,
-  FadeOut,
-  SlideOutLeft,
-  SlideInRight,
-  Layout,
-  withTiming,
-  withSpring,
-} from "react-native-reanimated";
-import { ThemedView } from "@/components/ThemedView";
-import { primaryColor } from "@/lib/Colors";
+import { Ionicons } from "@expo/vector-icons";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-// Define interface for onboarding step
-interface OnboardingStep {
-  icon: string;
-  title: string;
-  description: string;
-  image: ImageSourcePropType;
-}
+const { width, height } = Dimensions.get("window");
 
-const onboardingSteps: OnboardingStep[] = [
+// Sample onboarding data
+const onboardingData = [
   {
-    icon: "snowflake",
-    title: "Welcome JOOEVENTS",
-    description: "Daily Events",
-    image: require("../../assets/images/_mock/illustration-2.png"),
+    id: "1",
+    title: "Hand CLASH",
+    subtitle: "Events",
+    description:
+      "Master rock, paper and scissors. Predict moves and winning strategies!",
+    image: require("../.././assets/images/_mock/cover11.jpeg"),
+    ctaText: "CONTINUE",
   },
   {
-    icon: "people-arrows",
-    title: "Create and monitor events",
-    description: "Party, connect with amazing people",
-    image: require("../../assets/images/_mock/illustration.png"),
+    id: "2",
+    title: "Hand CLASH",
+    subtitle: "E-VOTING",
+    description:
+      "Collect unique characters with special abilities to dominate the game.",
+    image: require("../.././assets/images/_mock/cover14.jpeg"),
+    ctaText: "CONTINUE",
   },
   {
-    icon: "book-reader",
-    title: "Buy Event Tickets",
-    description: "No hustle for event hunt",
-    image: require("../../assets/images/_mock/illustration-3.png"),
+    id: "3",
+    title: "Hand CLASH",
+    subtitle: "COMMUNITY",
+    description:
+      "Challenge players worldwide and climb the global leaderboard.",
+    image: require("../.././assets/images/_mock/cover15.jpeg"),
+    ctaText: "GET STARTED",
   },
 ];
 
-let colorScheme;
+const OnboardingScreen: React.FC = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const position = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const swipeAnim = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
 
-export default function OnboardingScreen() {
-  colorScheme = useColorScheme();
-  const [screenIndex, setScreenIndex] = useState(0);
-  const data = onboardingSteps[screenIndex];
+  // Pan responder for swipe gestures
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        return Math.abs(gestureState.dx) > 20;
+      },
+      onPanResponderMove: (evt, gestureState) => {
+        // Only allow right to left swipe
+        if (gestureState.dx < 0) {
+          swipeAnim.setValue({ x: gestureState.dx, y: 0 });
+        }
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        if (gestureState.dx < -50 && currentIndex < onboardingData.length - 1) {
+          // Swipe completed - move to next card
+          Animated.timing(swipeAnim, {
+            toValue: { x: -width, y: 0 },
+            duration: 250,
+            useNativeDriver: true,
+          }).start(() => {
+            swipeAnim.setValue({ x: 0, y: 0 });
+            handleNext();
+          });
+        } else {
+          // Return to original position
+          Animated.spring(swipeAnim, {
+            toValue: { x: 0, y: 0 },
+            friction: 5,
+            useNativeDriver: true,
+          }).start();
+        }
+      },
+    })
+  ).current;
 
-  const onContinue = () => {
-    const isLastScreen = screenIndex === onboardingSteps.length - 1;
-    if (isLastScreen) {
-      endOnboarding();
+  const handleNext = () => {
+    if (currentIndex < onboardingData.length - 1) {
+      // Fade out animation
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 150,
+        useNativeDriver: true,
+      }).start(() => {
+        setCurrentIndex(currentIndex + 1);
+        // Fade in animation
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }).start();
+      });
     } else {
-      setScreenIndex(screenIndex + 1);
+      // Handle onboarding completion
+      console.log("Onboarding completed!");
+      // You would typically navigate to the main app here
     }
   };
-
-  const onBack = () => {
-    const isFirstScreen = screenIndex === 0;
-    if (isFirstScreen) {
-      endOnboarding();
-    } else {
-      setScreenIndex(screenIndex - 1);
-    }
-  };
-
-  const endOnboarding = () => {
-    setScreenIndex(0);
-    router.replace("/(auth)/main");
-  };
-
-  const swipes = Gesture.Simultaneous(
-    Gesture.Fling().direction(Directions.LEFT).onEnd(onContinue),
-    Gesture.Fling().direction(Directions.RIGHT).onEnd(onBack)
-  );
 
   return (
-    <SafeAreaView
-      style={[
-        styles.page,
-        {
-          backgroundColor: colorScheme === "dark" ? "#1A1D23" : "#FDFDFD",
-        },
-      ]}
-    >
-      <Stack.Screen options={{ headerShown: false }} />
-      <StatusBar style="light" />
-      <View style={styles.stepIndicatorContainer}>
-        {onboardingSteps.map((step, index) => (
+    <View style={styles.container}>
+      {/* Background with blur effect using current card image */}
+      <ImageBackground
+        source={onboardingData[currentIndex].image}
+        style={styles.backgroundImage}
+      >
+        <BlurView intensity={80} style={StyleSheet.absoluteFill} tint="dark" />
+
+        {/* Main content */}
+        <Animated.View
+          style={[
+            styles.contentContainer,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateX: swipeAnim.x }],
+            },
+          ]}
+          {...panResponder.panHandlers}
+        >
           <View
-            key={index}
-            style={[
-              styles.stepIndicator,
-              {
-                backgroundColor: index === screenIndex ? primaryColor : "grey",
-              },
-            ]}
-          />
-        ))}
-      </View>
-      <GestureDetector gesture={swipes}>
-        <View style={styles.pageContent}>
-          <Animated.View
-            entering={FadeIn.duration(500)}
-            exiting={FadeOut}
-            layout={Layout.springify()}
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              gap: wp(10),
+            }}
           >
-            <Image
-              style={styles.image}
-              source={data.image}
-              resizeMode="contain"
-            />
-          </Animated.View>
-          <Animated.View
-            style={styles.footer}
-            layout={Layout.springify()}
-            entering={FadeIn.duration(500).delay(100)}
-          >
-            <Animated.Text
-              entering={SlideInRight.duration(500).delay(200)}
-              exiting={SlideOutLeft}
-              style={[
-                styles.title,
-                {
-                  color: colorScheme === "dark" ? "#FDFDFD" : "#15141A",
-                },
-              ]}
-            >
-              {data.title}
-            </Animated.Text>
-            <Animated.Text
-              entering={SlideInRight.duration(500).delay(300)}
-              exiting={SlideOutLeft}
-              style={styles.description}
-            >
-              {data.description}
-            </Animated.Text>
-            <View style={styles.buttonsRow}>
-              <Text
-                onPress={endOnboarding}
-                style={[
-                  styles.buttonText,
-                  {
-                    color: colorScheme === "dark" ? "#FDFDFD" : "#15141A",
-                  },
-                ]}
-              >
-                Skip
-              </Text>
-              <Pressable
-                onPress={onContinue}
-                style={[
-                  styles.button,
-                  {
-                    backgroundColor: primaryColor,
-                  },
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.buttonText,
-                    {
-                      color: "#fff",
-                      fontWeight: "bold",
-                    },
-                  ]}
-                >
-                  Continue
+            <View>
+              <Image
+                source={onboardingData[currentIndex].image}
+                style={{
+                  width: wp(80),
+                  height: wp(120),
+                  borderRadius: 20,
+                }}
+                resizeMode="cover"
+              />
+
+              {/* <View style={styles.cardTitleContainer}>
+                <Text style={styles.cardTitle}>
+                  {onboardingData[currentIndex].subtitle}
                 </Text>
-              </Pressable>
+              </View> */}
             </View>
-          </Animated.View>
-        </View>
-      </GestureDetector>
-    </SafeAreaView>
+
+            <View
+              style={{
+                alignItems: "center",
+                gap: 20,
+              }}
+            >
+              {/* Description below card */}
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.description}>
+                  {onboardingData[currentIndex].description}
+                </Text>
+              </View>
+
+              {/* CTA Button */}
+              <TouchableOpacity style={styles.button} onPress={handleNext}>
+                <Text style={styles.buttonText}>
+                  {onboardingData[currentIndex].ctaText}
+                </Text>
+              </TouchableOpacity>
+
+              <View style={styles.indicatorContainer}>
+                {onboardingData.map((_, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.indicator,
+                      index === currentIndex && styles.activeIndicator,
+                    ]}
+                  />
+                ))}
+              </View>
+            </View>
+          </View>
+        </Animated.View>
+      </ImageBackground>
+      <StatusBar style="light" />
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  page: {
+  container: {
+    flex: 1,
+  },
+  backgroundImage: {
+    flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+  },
+  contentContainer: {
     flex: 1,
+    width: "100%",
+    paddingHorizontal: 10,
+    alignItems: "center",
   },
-  pageContent: {
-    padding: wp(5),
-    flex: 1,
+  header: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: 50,
+    marginBottom: 10,
   },
-  image: {
-    alignSelf: "center",
-    marginTop: wp(20),
-    width: wp(70),
-    height: wp(70),
+  gameTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#fff",
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
   },
-  title: {
+  coinContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 20,
+  },
+  coinText: {
+    color: "#FFD700",
+    fontWeight: "bold",
+    marginLeft: 5,
+  },
+  profileButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  gameButtonContainer: {
+    alignSelf: "flex-start",
+    marginVertical: 10,
+  },
+  gameButton: {
+    backgroundColor: "rgba(0,0,0,0.7)",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 18,
+  },
+  gameButtonText: {
+    color: "#fff",
+    marginLeft: 5,
+    fontWeight: "500",
+  },
+  card: {
+    width: "100%",
+    height: height * 0.5,
+    borderRadius: 20,
+    overflow: "hidden",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    marginVertical: 20,
+    position: "relative",
+  },
+  cardImage: {
+    width: wp(50),
+    height: wp(50),
+  },
+  cardTitleContainer: {
+    position: "absolute",
+    bottom: wp(-5),
+    width: "100%",
+    alignItems: "center",
+  },
+  cardTitle: {
     fontSize: wp(10),
-    fontFamily: "InterBlack",
-    letterSpacing: 1.3,
-    marginVertical: wp(4),
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#fff",
+    maxWidth: wp(70),
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+    lineHeight: wp(11),
+  },
+  descriptionContainer: {
+    width: "100%",
+    alignItems: "center",
   },
   description: {
-    color: "gray",
-    fontSize: wp(5),
-    fontFamily: "Inter",
-    lineHeight: wp(5),
-  },
-  footer: {
-    marginTop: "auto",
-  },
-  buttonsRow: {
-    marginTop: wp(4),
-    flexDirection: "row",
-    alignItems: "center",
-    gap: wp(4),
+    fontSize: 16,
+    textAlign: "center",
+    color: "#fff",
+    textShadowColor: "rgba(0, 0, 0, 0.5)",
+    textShadowOffset: { width: 0.5, height: 0.5 },
+    textShadowRadius: 1,
   },
   button: {
-    borderRadius: 50,
-    alignItems: "center",
-    padding: wp(5),
-    flex: 1,
+    backgroundColor: "#FFDE59",
+    paddingVertical: wp(5),
+    paddingHorizontal: wp(25),
+    borderRadius: 10,
+    marginBottom: 20,
   },
   buttonText: {
-    color: colorScheme === "dark" ? "#FDFDFD" : "#15141A",
-    fontFamily: "InterSemi",
-    fontSize: wp(4),
-    paddingHorizontal: wp(5),
+    color: "#333",
+    fontWeight: "bold",
+    fontSize: 16,
+    textAlign: "center",
   },
-  stepIndicatorContainer: {
+  indicatorContainer: {
     flexDirection: "row",
-    gap: 8,
-    marginHorizontal: wp(4),
+    marginTop: 10,
   },
-  stepIndicator: {
-    flex: 1,
-    height: 3,
-    backgroundColor: "gray",
-    borderRadius: wp(3),
+  indicator: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    backgroundColor: "#ccc",
+    marginHorizontal: 5,
+  },
+  activeIndicator: {
+    backgroundColor: "#fff",
+    width: 20,
   },
 });
+
+export default OnboardingScreen;
