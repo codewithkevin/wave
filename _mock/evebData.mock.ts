@@ -7,7 +7,7 @@ export const eventsMock: ReadEventDTO[] = [
         title: "Accra Tech Summit 2025",
         date: new Date("2025-03-15"),
         time: "09:00 AM",
-        coverImage: "https://i.pinimg.com/736x/e3/e8/c1/e3e8c156715cfb14859172a9e4fc61bc.jpg", // Tech conference crowd
+        coverImage: "https://i.pinimg.com/736x/13/da/80/13da8051f370d8a97837d7c3b4cf70ce.jpg", // Tech conference crowd
         images: ["https://images.unsplash.com/photo-1505373877841-8d25f7d466b1"], // Tech event stage
         venue: "Accra International Conference Centre",
         eventType: EventType.FREE,
@@ -27,7 +27,7 @@ export const eventsMock: ReadEventDTO[] = [
         title: "Ghana Food Festival",
         date: new Date("2025-04-20"),
         time: "12:00 PM",
-        coverImage: "https://images.unsplash.com/photo-1702827482556-481adcd68f3b?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Zm9vZCUyMGluJTIwYWZyaWNhfGVufDB8fDB8fHww", // Food festival scene
+        coverImage: "https://i.pinimg.com/736x/8f/7e/b5/8f7eb50df65045f98b4c77d4eee20067.jpg", // Food festival scene
         images: ["https://images.unsplash.com/photo-1600585154340-be6161a56a0c"], // Food stalls
         venue: "Independence Square",
         eventType: EventType.FREE,
@@ -47,7 +47,7 @@ export const eventsMock: ReadEventDTO[] = [
         title: "Accra Marathon 2025",
         date: new Date("2025-05-10"),
         time: "06:00 AM",
-        coverImage: "https://images.pexels.com/photos/14346273/pexels-photo-14346273.jpeg?auto=compress&cs=tinysrgb&w=1200", // Marathon runners
+        coverImage: "https://i.pinimg.com/originals/64/b8/ef/64b8ef8ca90b1c3d6f73f0e877a7c4d3.gif", // Marathon runners
         images: ["https://images.unsplash.com/photo-1517433367423-1d72348e3a39"], // Race start line
         venue: "Black Star Square",
         eventType: EventType.FREE,
@@ -106,7 +106,7 @@ export const eventsMock: ReadEventDTO[] = [
         title: "Ghana Fashion Week",
         date: new Date("2025-09-20"),
         time: "06:00 PM",
-        coverImage: "https://i.pinimg.com/736x/70/a0/ad/70a0ad4eda5deaee05f236fa0d0a0a21.jpg", // Fashion runway
+        coverImage: "https://i.pinimg.com/736x/f2/fa/36/f2fa36d6221f7830d7cd3992fd277068.jpg", // Fashion runway
         images: ["https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93"], // Models on stage
         venue: "Kempinski Hotel Gold Coast",
         eventType: EventType.FREE,
@@ -182,10 +182,10 @@ export const eventsMock: ReadEventDTO[] = [
     },
     {
         id: "evt_011",
-        title: "Ghana Wine Tasting Evening",
+        title: "Africa Art",
         date: new Date("2025-05-20"),
         time: "06:00 PM",
-        coverImage: "https://i.pinimg.com/736x/68/83/14/688314083a6906c8470a5a79ca1bafc2.jpg", // Wine tasting
+        coverImage: "https://i.pinimg.com/736x/24/6c/c0/246cc00b13136921fdf7ed862befb0fe.jpg", // Wine tasting
         images: ["https://images.unsplash.com/photo-1514190496438-3ca7c32696c1"], // Wine glasses
         venue: "Mövenpick Ambassador Hotel",
         eventType: EventType.FREE,
@@ -205,7 +205,7 @@ export const eventsMock: ReadEventDTO[] = [
         title: "Accra Esports Championship",
         date: new Date("2025-06-25"),
         time: "02:00 PM",
-        coverImage: "https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg?auto=compress&cs=tinysrgb&w=1200", // Esports event
+        coverImage: "https://i.pinimg.com/736x/45/4e/df/454edf004317eec238ecd42f16353e42.jpg", // Esports event
         images: ["https://images.unsplash.com/photo-1590179068383-c1e70e9a4c75"], // Gamers competing
         venue: "Accra Digital Centre",
         eventType: EventType.FREE,
@@ -225,7 +225,7 @@ export const eventsMock: ReadEventDTO[] = [
         title: "Children's Art Workshop",
         date: new Date("2025-07-15"),
         time: "10:00 AM",
-        coverImage: "https://i.pinimg.com/736x/e0/7d/54/e07d54c046c08d31c6a547deca46db59.jpg", // Kids painting
+        coverImage: "https://i.pinimg.com/736x/9e/5f/cb/9e5fcbdf90e43a5eb0554170914f28c1.jpg", // Kids painting
         images: ["https://images.unsplash.com/photo-1513366208861-7b1b0e2b4b8a"], // Art supplies
         venue: "National Museum of Ghana",
         eventType: EventType.FREE,
@@ -261,11 +261,11 @@ export const eventsMock: ReadEventDTO[] = [
         description: "Join developers, designers, and tech enthusiasts at React Native Ghana, a premier event dedicated to exploring the latest advancements, best practices, and real-world applications of React Native in mobile development. Whether you’re a seasoned React Native developer or just starting out, this event offers a unique opportunity to learn, connect, and grow within Ghana’s thriving tech community. Expect engaging keynote sessions from industry experts, covering topics such as optimizing performance in React Native apps, state management strategies, and integrating native modules for enhanced functionality. Learn from experienced developers who have built and scaled React Native applications for real-world use cases across various industries. Participate in interactive workshops designed to equip attendees with hands-on experience in building high-performance mobile applications. Topics may include Expo and React Native CLI, best practices for debugging and testing, integrating third-party APIs, and leveraging React Native for cross-platform development. Whether you’re working on a personal project or building apps for businesses, these workshops will provide valuable insights and practical skills. Network with fellow developers, startup founders, and industry professionals to exchange ideas, discuss challenges, and explore collaboration opportunities. This event fosters an inclusive and supportive environment where knowledge sharing is encouraged, making it the perfect place to meet like-minded individuals passionate about mobile development."
     },
     {
-        id: "evt_0208",
-        title: "React Native Ghana: Building the Future of Mobile Development",
+        id: "evt_021",
+        title: "The Turn Up Fest",
         date: new Date("2025-09-15"),
         time: "11:00 AM",
-        coverImage: "https://pbs.twimg.com/media/GdekV3rXQAAnaok?format=jpg&name=medium", // Kids painting
+        coverImage: "https://i.pinimg.com/1200x/01/64/83/01648362f7f99ea1f2de1c557ee87a2f.jpg",
         images: ["https://images.unsplash.com/photo-1513366208861-7b1b0e2b4b8a"], // Art supplies
         venue: "UMB Accra",
         eventType: EventType.FREE,
@@ -278,7 +278,148 @@ export const eventsMock: ReadEventDTO[] = [
         ticketSold: 0,
         createdAt: new Date("2025-02-10"),
         updatedAt: new Date("2025-02-25"),
-        description: "Join developers, designers, and tech enthusiasts at React Native Ghana, a premier event dedicated to exploring the latest advancements, best practices, and real-world applications of React Native in mobile development. Whether you’re a seasoned React Native developer or just starting out, this event offers a unique opportunity to learn, connect, and grow within Ghana’s thriving tech community. Expect engaging keynote sessions from industry experts, covering topics such as optimizing performance in React Native apps, state management strategies, and integrating native modules for enhanced functionality. Learn from experienced developers who have built and scaled React Native applications for real-world use cases across various industries. Participate in interactive workshops designed to equip attendees with hands-on experience in building high-performance mobile applications. Topics may include Expo and React Native CLI, best practices for debugging and testing, integrating third-party APIs, and leveraging React Native for cross-platform development. Whether you’re working on a personal project or building apps for businesses, these workshops will provide valuable insights and practical skills. Network with fellow developers, startup founders, and industry professionals to exchange ideas, discuss challenges, and explore collaboration opportunities. This event fosters an inclusive and supportive environment where knowledge sharing is encouraged, making it the perfect place to meet like-minded individuals passionate about mobile development."
+        description: "Join us for a fun-filled day of worship, games, and activities for kids"
+    },
+    {
+        id: "evt_022",
+        title: "Jesus Party",
+        date: new Date("2025-09-16"),
+        time: "14:00 PM",
+        coverImage: "https://i.pinimg.com/1200x/19/22/8e/19228e40b5bb20161e3b51f738d1a47f.jpg",
+        images: ["https://images.unsplash.com/photo-1513366208861-7b1b0e2b4b8a"], // Art supplies
+        venue: "UMB Accra",
+        eventType: EventType.FREE,
+        location: "Accra, Ghana",
+        locationCordinates: { lat: 5.4566, lng: -0.2256 }, // National Museum
+        numberOfTickets: 50,
+        ticketPrice: { currency: "GHS", amount: 30 },
+        category: EventCategoryEnum.ChildrensWorkshops,
+        status: EventStatus.PENDING,
+        ticketSold: 0,
+        createdAt: new Date("2025-02-10"),
+        updatedAt: new Date("2025-02-25"),
+        description: "Join us for a fun-filled day of worship, games, and activities for kids"
+    },
+    {
+        id: "evt_023",
+        title: "Two Days",
+        date: new Date("2025-09-36"),
+        time: "14:00 PM",
+        coverImage: "https://i.pinimg.com/1200x/83/f1/82/83f18294fe1c25ffef9b88587d39b4b2.jpg",
+        images: ["https://images.unsplash.com/photo-1513366208861-7b1b0e2b4b8a"], // Art supplies
+        venue: "UMB Accra",
+        eventType: EventType.FREE,
+        location: "Accra, Ghana",
+        locationCordinates: { lat: 5.4566, lng: -0.2356 }, // National Museum
+        numberOfTickets: 50,
+        ticketPrice: { currency: "GHS", amount: 30 },
+        category: EventCategoryEnum.ChildrensWorkshops,
+        status: EventStatus.PENDING,
+        ticketSold: 0,
+        createdAt: new Date("2025-02-10"),
+        updatedAt: new Date("2025-02-25"),
+        description: "Join us for a fun-filled day of worship, games, and activities for kids"
+    },
+    {
+        id: "evt_028",
+        title: "Be Vocal",
+        date: new Date("2025-09-36"),
+        time: "14:00 PM",
+        coverImage: "https://i.pinimg.com/1200x/87/bd/e0/87bde08eb898eba3173babd703c82151.jpg",
+        images: ["https://images.unsplash.com/photo-1513366208861-7b1b0e2b4b8a"], // Art supplies
+        venue: "UMB Accra",
+        eventType: EventType.FREE,
+        location: "Accra, Ghana",
+        locationCordinates: { lat: 5.4566, lng: -0.2356 }, // National Museum
+        numberOfTickets: 50,
+        ticketPrice: { currency: "GHS", amount: 30 },
+        category: EventCategoryEnum.ChildrensWorkshops,
+        status: EventStatus.PENDING,
+        ticketSold: 0,
+        createdAt: new Date("2025-02-10"),
+        updatedAt: new Date("2025-02-25"),
+        description: "Join us for a fun-filled day of worship, games, and activities for kids"
+    },
+    {
+        id: "evt_032",
+        title: "Easter Comedy Show",
+        date: new Date("2025-09-36"),
+        time: "6:00 PM",
+        coverImage: "https://i.pinimg.com/736x/71/6e/a8/716ea86df3189dd2de9bed0ffe173088.jpg",
+        images: ["https://images.unsplash.com/photo-1513366208861-7b1b0e2b4b8a"], // Art supplies
+        venue: "UMB Accra",
+        eventType: EventType.FREE,
+        location: "Accra, Ghana",
+        locationCordinates: { lat: 5.5566, lng: -0.24356 }, // National Museum
+        numberOfTickets: 50,
+        ticketPrice: { currency: "GHS", amount: 30 },
+        category: EventCategoryEnum.ChildrensWorkshops,
+        status: EventStatus.PENDING,
+        ticketSold: 0,
+        createdAt: new Date("2025-02-10"),
+        updatedAt: new Date("2025-02-25"),
+        description: "Join us for a fun-filled day of worship, games, and activities for kids"
+    },
+    {
+        id: "evt_0233",
+        title: "NIRUANA",
+        date: new Date("2025-09-36"),
+        time: "6:00 PM",
+        coverImage: "https://i.pinimg.com/736x/d5/7e/a9/d57ea9d52b8a6dccf7ac80d730f4d229.jpg",
+        images: ["https://images.unsplash.com/photo-1513366208861-7b1b0e2b4b8a"], // Art supplies
+        venue: "UMB Accra",
+        eventType: EventType.FREE,
+        location: "Accra, Ghana",
+        locationCordinates: { lat: 5.5566, lng: -0.24356 }, // National Museum
+        numberOfTickets: 50,
+        ticketPrice: { currency: "GHS", amount: 30 },
+        category: EventCategoryEnum.ChildrensWorkshops,
+        status: EventStatus.PENDING,
+        ticketSold: 0,
+        createdAt: new Date("2025-02-10"),
+        updatedAt: new Date("2025-02-25"),
+        description: "Join us for a fun-filled day of worship, games, and activities for kids"
+    },
+    {
+        id: "evt_0393",
+        title: "Ghetto King",
+        date: new Date("2025-09-36"),
+        time: "6:00 PM",
+        coverImage: "https://i.pinimg.com/736x/6c/44/fe/6c44fe4bbf974b73e592a90cd446d257.jpg",
+        images: ["https://images.unsplash.com/photo-1513366208861-7b1b0e2b4b8a"], // Art supplies
+        venue: "Silver Bird",
+        eventType: EventType.FREE,
+        location: "Accra, Ghana",
+        locationCordinates: { lat: 5.6228, lng: -0.1733 }, // National Museum
+        numberOfTickets: 50,
+        ticketPrice: { currency: "GHS", amount: 30 },
+        category: EventCategoryEnum.ChildrensWorkshops,
+        status: EventStatus.PENDING,
+        ticketSold: 0,
+        createdAt: new Date("2025-02-10"),
+        updatedAt: new Date("2025-02-25"),
+        description: "Join us for a fun-filled day of worship, games, and activities for kids"
+    },
+
+    {
+        id: "evt_0993",
+        title: "Ama Piano Fest",
+        date: new Date("2025-09-36"),
+        time: "6:00 PM",
+        coverImage: "https://i.pinimg.com/736x/70/8f/12/708f121967995617662ae2b1e390acd8.jpg",
+        images: ["https://images.unsplash.com/photo-1513366208861-7b1b0e2b4b8a"], // Art supplies
+        venue: "Silver Bird",
+        eventType: EventType.FREE,
+        location: "Accra, Ghana",
+        locationCordinates: { lat: 5.6228, lng: -0.1733 }, // National Museum
+        numberOfTickets: 50,
+        ticketPrice: { currency: "GHS", amount: 30 },
+        category: EventCategoryEnum.ChildrensWorkshops,
+        status: EventStatus.PENDING,
+        ticketSold: 0,
+        createdAt: new Date("2025-02-10"),
+        updatedAt: new Date("2025-02-25"),
+        description: "Join us for a fun-filled day of worship, games, and activities for kids"
     },
 ];
 
