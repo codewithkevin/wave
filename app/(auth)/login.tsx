@@ -18,6 +18,7 @@ export default function SignIn() {
   const router = useRouter();
   const fetchUser = useUserStore((state) => state.fetchUser);
   const login = useUserStore((state) => state.login);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -130,10 +131,18 @@ export default function SignIn() {
           value={password}
           label="Password"
           placeholder="Enter password"
-          secureTextEntry={true}
+          secureTextEntry={!showPassword}
           onChangeText={(password) => setPassword(password)}
           leftIcon={
             <MaterialIcons name="lock-outline" size={24} color="gray" />
+          }
+          rightIcon={
+            <MaterialIcons
+              name={showPassword ? "visibility-off" : "visibility"}
+              size={24}
+              color="gray"
+              onPress={() => setShowPassword(!showPassword)}
+            />
           }
         />
         {formError ? (
@@ -147,6 +156,7 @@ export default function SignIn() {
           </ThemedText>
         ) : null}
         <ThemedText
+          onPress={() => router.push("/(auth)/reset-password")}
           type="defaultSemiBold"
           style={{
             textAlign: "right",

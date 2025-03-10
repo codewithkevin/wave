@@ -23,7 +23,7 @@ export default function ContentLayout() {
       <Stack.Screen
         name="events-details"
         options={{
-          headerShown: false,
+          headerShown: true,
         }}
       />
       <Stack.Screen

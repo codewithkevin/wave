@@ -14,24 +14,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ThemedText } from "@/components/ThemedText";
 import { router } from "expo-router";
 
-const images = [
-  require("../../assets/images/_mock/main.avif"),
-  require("../../assets/images/_mock/cover0.jpeg"),
-  require("../../assets/images/_mock/cover13.jpeg"),
-];
 export default function MainScreen() {
-  const [selectedImage, setSelectedImage] = React.useState(0);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setSelectedImage((prev) => (prev + 1) % images.length);
-    }, 10000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <ImageBackground
-      source={images[selectedImage]}
+      source={require("../../assets/images/_mock/main.avif")}
       style={{
         flex: 1,
       }}
@@ -65,7 +51,7 @@ export default function MainScreen() {
 
           <View style={{ gap: wp(1) }}>
             <ThemedText lightColor="white" type="subtitle">
-              Welcome to WAVE
+              Welcome to WAVE 🎫🎟️
             </ThemedText>
             <ThemedText lightColor="white" type="defaultSemiBold">
               solution for all your event cravings!

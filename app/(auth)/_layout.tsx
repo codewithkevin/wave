@@ -4,15 +4,7 @@ import { useAuth } from "@clerk/clerk-expo";
 import { useUserStore } from "@/store/auth";
 
 export default function AuthRoutesLayout() {
-  // const { isLoaded, isSignedIn } = useAuth();
-  const { user, isAuthenticated, authToken, sessionId } = useUserStore();
-
-  // console.log("user", JSON.stringify(user, null, 5));
-  // console.log("isAuthenticated", isAuthenticated);
-  // console.log("isSignedIn", authToken);
-  // console.log("sessionId", sessionId);
-
-  // if (!isLoaded) return null;
+  const { isAuthenticated } = useUserStore();
 
   if (isAuthenticated) return <Redirect href="/(index)/(tabs)" />;
 
@@ -52,6 +44,12 @@ export default function AuthRoutesLayout() {
         }}
       />
       <Stack.Screen name="sign-up" />
+      <Stack.Screen
+        name="reset-password"
+        options={{
+          headerTitle: "Reset Password",
+        }}
+      />
     </Stack>
   );
 }

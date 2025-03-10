@@ -30,17 +30,44 @@ export default function SignUpScreen() {
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
   const [formError, setFormError] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [validationErrors, setValidationErrors] = React.useState<{
     email?: string;
     password?: string;
+    confirmPassword?: string;
   }>({});
 
   const validateForm = () => {
-    return validateFormHandler(emailAddress, password, setValidationErrors);
+    const errors: {
+      email?: string;
+      password?: string;
+      confirmPassword?: string;
+    } = {};
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailAddress || !emailRegex.test(emailAddress)) {
+      errors.email = "Please enter a valid email address";
+    }
+
+    // Password validation
+    if (!password || password.length < 8) {
+      errors.password = "Password must be at least 8 characters";
+    }
+
+    // Confirm password validation
+    if (password !== confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const onSignUpPress = async () => {
@@ -112,7 +139,7 @@ export default function SignUpScreen() {
 
           if (newUser) {
             login(signUpAttempt.createdSessionId!!, newUser);
-            Alert.alert("WELCOME TO JOO EVENT");
+            Alert.alert("WELCOME TO Wave");
             router.replace("/");
           } else {
             setFormError("Failed to create user account.");
@@ -242,7 +269,7 @@ export default function SignUpScreen() {
         <TextInput
           value={password}
           placeholder="Enter password"
-          secureTextEntry={true}
+          secureTextEntry={!showPassword}
           onChangeText={(password) => {
             setPassword(password);
             setValidationErrors((prev) => ({ ...prev, password: undefined }));
@@ -250,6 +277,39 @@ export default function SignUpScreen() {
           error={validationErrors.password}
           leftIcon={
             <MaterialIcons name="lock-outline" size={24} color="gray" />
+          }
+          rightIcon={
+            <MaterialIcons
+              name={showPassword ? "visibility-off" : "visibility"}
+              size={24}
+              color="gray"
+              onPress={() => setShowPassword(!showPassword)}
+            />
+          }
+        />
+
+        <TextInput
+          value={confirmPassword}
+          placeholder="Confirm password"
+          secureTextEntry={!showConfirmPassword}
+          onChangeText={(confirmedPassword) => {
+            setConfirmPassword(confirmedPassword);
+            setValidationErrors((prev) => ({
+              ...prev,
+              confirmPassword: undefined,
+            }));
+          }}
+          error={validationErrors.confirmPassword}
+          leftIcon={
+            <MaterialIcons name="lock-outline" size={24} color="gray" />
+          }
+          rightIcon={
+            <MaterialIcons
+              name={showConfirmPassword ? "visibility-off" : "visibility"}
+              size={24}
+              color="gray"
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            />
           }
         />
 
@@ -266,7 +326,7 @@ export default function SignUpScreen() {
 
         <Button
           onPress={onSignUpPress}
-          disabled={!emailAddress || !password || isLoading}
+          disabled={!emailAddress || !password || !confirmPassword || isLoading}
           loading={isLoading}
           size="lg"
           style={{

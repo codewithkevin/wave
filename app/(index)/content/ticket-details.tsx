@@ -99,7 +99,7 @@ export default function TicketDetails() {
               color: "white",
             }}
           >
-            Download Image
+            Download Ticket
           </ThemedText>
         </Button>
       </BodyScrollView>

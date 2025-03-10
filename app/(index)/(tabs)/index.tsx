@@ -192,9 +192,7 @@ const HomeScreen: React.FC = () => {
             </ThemedText>
           </Pressable>
         }
-        centerComponent={
-          <ThemedText type="defaultSemiBold">Joo Event</ThemedText>
-        }
+        centerComponent={<ThemedText type="defaultSemiBold">Wave</ThemedText>}
         rightComponent={() => {
           return (
             <TouchableOpacity

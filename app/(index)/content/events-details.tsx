@@ -1,21 +1,16 @@
 import {
   View,
   useColorScheme,
+  ScrollView,
   Dimensions,
   Pressable,
   StyleSheet,
   ColorSchemeName,
-  SectionList,
-  SectionListData,
 } from "react-native";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useLocalSearchParams, Stack, router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import Animated, {
-  FadeInUp,
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from "react-native-reanimated";
+import Animated, { FadeInUp } from "react-native-reanimated";
 import {
   heightPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -34,6 +29,7 @@ import {
 import { useBookmarkStore } from "@/store/bookmark";
 import { ToastType, useToast } from "react-native-toast-notifications";
 import TicketModal from "@/components/hoc/ticket-modal";
+import { useUserStore } from "@/store/auth";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -122,12 +118,6 @@ const renderStackHeader = ({
   );
 };
 
-// Section list data types
-interface TabData {
-  type: string;
-  data: any[];
-}
-
 export default function EventDetails(): React.ReactNode {
   const colorScheme = useColorScheme();
   const params = useLocalSearchParams();
@@ -138,10 +128,6 @@ export default function EventDetails(): React.ReactNode {
 
   // Add state for modal visibility
   const [ticketModalVisible, setTicketModalVisible] = useState<boolean>(false);
-
-  // Tab state
-  const [activeTab, setActiveTab] = useState<number>(0);
-  const sectionListRef = useRef<SectionList>(null);
 
   const event = eventString
     ? (JSON.parse(eventString as string) as ReadEventDTO)
@@ -155,194 +141,7 @@ export default function EventDetails(): React.ReactNode {
 
       return ["transparent", "rgba(255,255,255,0.5)", "rgba(255,255,255,1)"];
     },
-    []
-  );
-
-  // Create section data for the SectionList
-  const getSections = useCallback(() => {
-    if (!event) return [];
-
-    // Create section data based on active tab
-    const tabData: TabData[] = [
-      {
-        type: "Description",
-        data: [{ content: event.description }],
-      },
-      {
-        type: "Replies",
-        data: [{ content: "Event replies will appear here" }],
-      },
-      {
-        type: "Media",
-        data: [{ content: "Event media gallery will appear here" }],
-      },
-      {
-        type: "Likes",
-        data: [{ content: "People who liked this event will appear here" }],
-      },
-    ];
-
-    return [tabData[activeTab]];
-  }, [event, activeTab]);
-
-  // Header for the SectionList
-  const ListHeaderComponent = useCallback(() => {
-    if (!event) return null;
-
-    return (
-      <View>
-        <View>
-          <Animated.Image
-            entering={FadeInUp.duration(1000).delay(300)}
-            sharedTransitionTag={`image-${id}`}
-            source={{ uri: event?.coverImage }}
-            style={{
-              width: SCREEN_WIDTH,
-              height: hp(60),
-            }}
-          />
-          <LinearGradient
-            colors={gradientColor(colorScheme)}
-            start={{ x: 0.6, y: 0 }}
-            end={{ x: 0.5, y: 1 }}
-            style={{
-              position: "absolute",
-              bottom: 0,
-              width: SCREEN_WIDTH,
-              height: hp("55"),
-            }}
-          />
-        </View>
-
-        <View
-          style={{
-            position: "absolute",
-            bottom: wp(-5),
-            alignSelf: "center",
-            gap: wp(3),
-          }}
-        >
-          <View
-            style={{
-              alignItems: "center",
-            }}
-          >
-            <ThemedText
-              style={{
-                textAlign: "center",
-                width: wp(35),
-              }}
-              type="title"
-            >
-              {event?.title}
-            </ThemedText>
-          </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              gap: wp(9),
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <ThemedView style={styles.dateCard}>
-              <ThemedText style={styles.dateText}>
-                {getDateComponent(event?.date, "day")}
-              </ThemedText>
-              <ThemedText style={styles.monthText}>
-                {getDateComponent(event?.date, "month")}
-              </ThemedText>
-            </ThemedView>
-
-            <View>
-              <ThemedText
-                style={{
-                  textAlign: "center",
-                }}
-                type="defaultSemiBold"
-              >
-                {getDateComponents(event?.date, {
-                  month: true,
-                  day: true,
-                  year: true,
-                })}
-              </ThemedText>
-
-              <ThemedText
-                style={{
-                  textAlign: "center",
-                  width: wp(14),
-                }}
-                type="defaultSemiBold"
-              >
-                {event?.category}
-              </ThemedText>
-            </View>
-
-            <Pressable
-              style={{
-                borderWidth: 1,
-                padding: 5,
-                borderRadius: 5,
-                borderColor: primaryColor,
-              }}
-            >
-              <Ionicons name="calendar" size={24} color={primaryColor} />
-            </Pressable>
-          </View>
-        </View>
-
-        {/* Spacing to account for the absolute positioned elements */}
-        <View style={{ height: wp(15) }} />
-      </View>
-    );
-  }, [event, colorScheme, id]);
-
-  // Render the tab section header (this will stick to the top)
-  const renderSectionHeader = useCallback(() => {
-    return (
-      <ThemedView style={styles.tabBarContainer}>
-        {["Description", "Replies", "Media", "Likes"].map((tab, index) => (
-          <Pressable
-            key={`option-${index}`}
-            style={styles.tabButton}
-            onPress={() => {
-              setActiveTab(index);
-            }}
-          >
-            <ThemedText
-              style={[
-                styles.tabText,
-                activeTab === index && { color: primaryColor },
-              ]}
-            >
-              {tab}
-            </ThemedText>
-            {activeTab === index && (
-              <View
-                style={[
-                  styles.blueUnderline,
-                  { backgroundColor: primaryColor },
-                ]}
-              />
-            )}
-          </Pressable>
-        ))}
-      </ThemedView>
-    );
-  }, [activeTab]);
-
-  // Render each item in the section
-  const renderItem = useCallback(
-    ({ item, section }: { item: any; section: SectionListData<any> }) => {
-      return (
-        <View style={styles.tabContent}>
-          <ThemedText type="defaultSemiBold">{item.content}</ThemedText>
-        </View>
-      );
-    },
-    []
+    [colorScheme]
   );
 
   if (!event) return null;
@@ -364,20 +163,126 @@ export default function EventDetails(): React.ReactNode {
             }),
         }}
       />
-      <SectionList
-        ref={sectionListRef}
-        sections={getSections()}
-        keyExtractor={(item, index) => `tab-item-${index}`}
-        renderItem={renderItem}
-        renderSectionHeader={renderSectionHeader}
-        ListHeaderComponent={ListHeaderComponent}
-        stickySectionHeadersEnabled={true}
-        showsVerticalScrollIndicator={false}
+      <ScrollView
         style={{
           flex: 1,
           backgroundColor: colorScheme === "dark" ? "#000" : "#ffffff",
         }}
-      />
+      >
+        <View>
+          <View>
+            <Animated.Image
+              entering={FadeInUp.duration(1000).delay(300)}
+              sharedTransitionTag={`image-${id}`}
+              source={{ uri: event?.coverImage }}
+              style={{
+                width: SCREEN_WIDTH,
+                height: hp(60),
+              }}
+            />
+            <LinearGradient
+              colors={gradientColor(colorScheme)}
+              start={{ x: 0.6, y: 0 }}
+              end={{ x: 0.5, y: 1 }}
+              style={{
+                position: "absolute",
+                bottom: 0,
+                width: SCREEN_WIDTH,
+                height: hp("55"),
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              position: "absolute",
+              bottom: wp(-5),
+              alignSelf: "center",
+              gap: wp(3),
+            }}
+          >
+            <View
+              style={{
+                alignItems: "center",
+              }}
+            >
+              <ThemedText
+                style={{
+                  textAlign: "center",
+                  width: wp(35),
+                }}
+                type="title"
+              >
+                {event?.title}
+              </ThemedText>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                gap: wp(9),
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ThemedView style={styles.dateCard}>
+                <ThemedText style={styles.dateText}>
+                  {getDateComponent(event?.date, "day")}
+                </ThemedText>
+                <ThemedText style={styles.monthText}>
+                  {getDateComponent(event?.date, "month")}
+                </ThemedText>
+              </ThemedView>
+
+              <View>
+                <ThemedText
+                  style={{
+                    textAlign: "center",
+                  }}
+                  type="defaultSemiBold"
+                >
+                  {getDateComponents(event?.date, {
+                    month: true,
+                    day: true,
+                    year: true,
+                  })}
+                </ThemedText>
+
+                <ThemedText
+                  style={{
+                    textAlign: "center",
+                    width: wp(14),
+                  }}
+                  type="defaultSemiBold"
+                >
+                  {event?.category}
+                </ThemedText>
+              </View>
+
+              <Pressable
+                style={{
+                  borderWidth: 1,
+                  padding: 5,
+                  borderRadius: 5,
+                  borderColor: primaryColor,
+                }}
+              >
+                <Ionicons name="calendar" size={24} color={primaryColor} />
+              </Pressable>
+            </View>
+          </View>
+        </View>
+
+        <View
+          style={{
+            marginTop: wp(11),
+            paddingHorizontal: wp(1),
+          }}
+        >
+          <ThemedText type="title">Description</ThemedText>
+          <ThemedText type="defaultSemiBold">{event?.description}</ThemedText>
+        </View>
+      </ScrollView>
 
       <ThemedView
         style={{
@@ -443,34 +348,5 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "600",
     color: "#666",
-  },
-  tabBarContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingBottom: wp(2),
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "rgba(150, 150, 150, 0.3)",
-    paddingTop: wp(2),
-  },
-  tabButton: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 10,
-  },
-  tabText: {
-    fontSize: 14,
-    fontWeight: "600",
-    paddingVertical: 5,
-  },
-  blueUnderline: {
-    height: 2,
-    width: "50%",
-    borderRadius: 4,
-  },
-  tabContent: {
-    padding: wp(4),
-    paddingBottom: wp(20),
-    minHeight: hp(30),
   },
 });
