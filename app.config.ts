@@ -1,7 +1,7 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
 
 
-const EAS_PROJECT_ID = "08fe4b89-eaa3-40a6-bcd2-457ca8ed9650";
+const EAS_PROJECT_ID = "4503ec18-72ad-4ed3-9780-fc3ecb64e9b8";
 const PROJECT_SLUG = "Wave";
 const OWNER = "kevinblack";
 
